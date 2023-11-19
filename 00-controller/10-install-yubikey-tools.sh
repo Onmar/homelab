@@ -1,7 +1,4 @@
 #!/bin/bash
-#sudo apt -y install wget gnupg2 gnupg-agent dirmngr cryptsetup scdaemon pcscd secure-delete hopenpgp-tools yubikey-personalization
-
-
 cd ~/.gnupg ; wget https://raw.githubusercontent.com/drduh/config/master/gpg.conf
 chmod 600 gpg.conf
 
@@ -21,3 +18,4 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 EOF
+
