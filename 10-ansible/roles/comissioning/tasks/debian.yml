@@ -9,6 +9,7 @@
 - name: Set hostname
   ansible.builtin.include_role:
     name: holms.fqdn
+    ip_address: 127.0.1.1
 
 - name: Set locale
   ansible.builtin.include_role:

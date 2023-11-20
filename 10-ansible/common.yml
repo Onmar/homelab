@@ -1,6 +1,6 @@
 ---
 - hosts: test
   roles:
-    - { role: holms.fqdn, become: true }
+    - { role: holms.fqdn, ip_address: 127.0.1.1, become: true }
     - locale
     - ssh
