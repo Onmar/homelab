@@ -1,0 +1,109 @@
+---
+- name: Update all packages
+  ansible.builtin.apt:
+    autoclean: true
+    update_cache: true
+    upgrade: safe
+    autoremove: true
+
+- name: Set hostname
+  ansible.builtin.include_role:
+    name: holms.fqdn
+
+- name: Set locale
+  ansible.builtin.include_role:
+    name: locale
+
+# Groups
+- name: Ensure sudo group is present
+  group:
+    name: sudo
+    state: present
+    
+- name: Ensure ssh group is present
+  group:
+    name: ssh
+    state: present
+
+- name: Ensure sudo group has sudo privileges
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: "^%sudo"
+    line: "%sudo ALL=(ALL:ALL) ALL"
+    state: present
+    validate: "/usr/sbin/visudo -cf %s"
+
+# Ansible user
+- name: Create ansible user
+  ansible.builtin.user:
+    name: "{{ created_user }}"
+    password: "{{ created_password }}"
+    update_password: always
+    groups: ["sudo", "ssh"]
+    shell: /bin/bash
+
+- name: Add SSH key to ansible user
+  ansible.posix.authorized_key:
+    user: "{{ created_user }}"
+    key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
+    key_options: 'no-port-forwarding,from="192.168.1.79"'
+    exclusive: true
+
+- name: Enable passwordless sudo for ansible user
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: "^ansible"
+    line: "ansible ALL=(ALL:ALL) NOPASSWD:ALL"
+    state: present
+    validate: "/usr/sbin/visudo -cf %s"
+
+# sshd config
+- name: Set sshd config
+  ansible.builtin.include_role:
+    name: ssh
+
+# Disable IPv6
+- name: Disable IPv6 via sysctl
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+  with_items:
+    - { name: "net.ipv6.conf.all.disable_ipv6", value: "1"}
+    - { name: "net.ipv6.conf.default.disable_ipv6", value: "1"}
+    - { name: "net.ipv6.conf.lo.disable_ipv6", value: "1"}
+
+# UFW
+- name: Ensure ufw is installed
+  ansible.builtin.apt:
+    name: ufw
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Disable IPv6 in ufw
+  ansible.builtin.lineinfile:
+    path: /etc/default/ufw
+    regex: '^IPV6'
+    line: "IPV6=false"
+    state: present
+
+- name: Allow ssh traffic
+  community.general.ufw:
+    comment: SSH
+    from_ip: "192.168.1.0/24"
+    rule: allow
+    port: 22
+    proto: tcp
+
+- name: Enable firewall
+  community.general.ufw:
+    state: enabled
+    policy: deny
+
+# Secure root
+- name: Remove root password
+  ansible.builtin.user:
+    name: "root"
+    password: "*"
+    update_password: always

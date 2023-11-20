@@ -1,0 +1,21 @@
+---
+- name: Set timezone
+  community.general.timezone:
+    name: "Europe/Zurich"
+
+- name: Generate locale
+  community.general.locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "en_US.UTF-8"
+    - "de_CH.UTF-8"
+
+- name: Set keyboard layout
+  ansible.builtin.include_role:
+    name: gantsign.keyboard
+  vars:
+    keyboard_model: pc105
+    keyboard_layout: ch
+  when: ansible_facts['os_family']|lower == 'debian'
+    

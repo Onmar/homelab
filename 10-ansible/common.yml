@@ -1,0 +1,6 @@
+---
+- hosts: test
+  roles:
+    - { role: holms.fqdn, become: true }
+    - locale
+    - ssh

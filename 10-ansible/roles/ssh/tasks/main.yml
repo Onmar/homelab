@@ -1,0 +1,33 @@
+---
+- name: Update ssh server
+  ansible.builtin.apt:
+    name: openssh-server
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+  notify: Restart sshd
+
+- name: SSH Config - Disable root login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin no"
+    state: present
+    backup: yes
+  notify: Restart sshd
+
+- name: SSH Config - Disable password authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: "PasswordAuthentication no"
+    state: present
+  notify: Restart sshd
+
+- name: SSH Config - Allow only users in ssh group
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^AllowGroups'
+    line: "AllowGroups ssh"
+    state: present
+  notify: Restart sshd
