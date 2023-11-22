@@ -1,0 +1,11 @@
+---
+- hosts: production
+  tasks:
+    - name: Remove snapshots
+      community.general.zfs:
+        name: "{{ item }}@before-ansible"
+        state: absent
+      with_items:
+        - bpool
+        - rpool
+      become: true

@@ -1,0 +1,7 @@
+---
+user_admin_name: "local-admin"
+# ansible all -i localhost, -m debug -a "msg={{ 'password' | password_hash('sha512', 'ZIGx5gG.e2pAuFNK', rounds=65600) }}"
+# mkpasswd --method=sha-512 --rounds=65600 --salt="ZIGx5gG.e2pAuFNK" password
+user_admin_hashed_password: "$6$rounds=65600$ZIGx5gG.e2pAuFNK$0HcCpugirWB6k6pr1QIDQZZviNg2V9wD.QdAwMsO.sINY5i2aHmUaC2jiLS6Fr361oKxvZcEoMfcJQ5Qh3SOY1"
+user_admin_shell: "/bin/bash"
+user_admin_ssh_key: ""

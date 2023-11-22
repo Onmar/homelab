@@ -1,0 +1,15 @@
+---
+- hosts: production
+  roles:
+    - create-snapshot
+    - update
+    - linux_groups
+    - sudo
+    - user-ansible
+    - user-admin
+    - ipconfig
+    - ufw
+    - ssh
+    - root
+    - locale
+    - disks

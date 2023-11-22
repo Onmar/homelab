@@ -1,0 +1,7 @@
+---
+timezone: "Europe/Zurich"
+locales:
+  - "en_US.UTF-8"
+  - "de_CH.UTF-8"
+keyboard_model: pc105
+keyboard_layout: ch

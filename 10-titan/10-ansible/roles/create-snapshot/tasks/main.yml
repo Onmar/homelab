@@ -1,0 +1,11 @@
+---
+- block:
+    - name: Create snapshots before ansible
+      community.general.zfs:
+        name: "{{ item }}@before-ansible"
+        state: present
+      with_items:
+        - bpool
+        - rpool
+        
+  become: true

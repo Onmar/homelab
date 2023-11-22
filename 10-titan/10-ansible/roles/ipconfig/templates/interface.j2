@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+auto {{ ip.interface }}
+iface {{ ip.interface }} inet static
+    address {{ ip.address | ansible.utils.ipaddr('address/prefix') }}
+{% if 'gateway' in ip %}
+    gateway {{ ip.gateway }}
+{% endif %}

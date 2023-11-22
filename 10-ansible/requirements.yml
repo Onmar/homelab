@@ -1,6 +1,0 @@
-- src: gantsign.keyboard
-  version: 1.5.0
-
-- name: holms.fqdn
-  src: https://github.com/holms/ansible-fqdn
-  version: "1.2"

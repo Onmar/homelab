@@ -1,0 +1,10 @@
+---
+user_ansible_name: "{{ ansible_user }}"
+# ansible all -i localhost, -m debug -a "msg={{ 'password' | password_hash('sha512', 'ZIGx5gG.e2pAuFNK', rounds=65600) }}"
+# mkpasswd --method=sha-512 --rounds=65600 --salt="ZIGx5gG.e2pAuFNK" password
+user_ansible_hashed_password: "$6$rounds=65600$ZIGx5gG.e2pAuFNK$0HcCpugirWB6k6pr1QIDQZZviNg2V9wD.QdAwMsO.sINY5i2aHmUaC2jiLS6Fr361oKxvZcEoMfcJQ5Qh3SOY1"
+user_ansible_shell: "/bin/bash"
+user_ansible_ssh_key: ""
+
+sudoers_file_path: /etc/sudoers
+visudo_exec_path: /usr/sbin/visudo

@@ -1,0 +1,10 @@
+---
+- block:
+    - name: Update safe packages
+      ansible.builtin.apt:
+        autoclean: true
+        update_cache: true
+        upgrade: safe
+        autoremove: true
+
+  become: true

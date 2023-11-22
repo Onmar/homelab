@@ -1,6 +1,0 @@
----
-- hosts: comissioning
-  become: true
-  roles:
-    - comissioning
-  

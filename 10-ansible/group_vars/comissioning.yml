@@ -1,4 +1,0 @@
-ansible_user: root
-ansible_password: root
-created_user: "ansible"
-created_password: "$6$rounds=656000$GeunMgMftVm2cFSY$2BiiGfS8Q./iT3zKD8WZtg3TyksGKSnsFvVmaNVBieE9yoqf1qLdMM2ITtGBz1iFZfXh9Kd8C88wmYEWKPfeX1"

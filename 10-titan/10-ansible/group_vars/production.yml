@@ -1,0 +1,36 @@
+---
+linux_groups: [ "sudo", "ssh" ]
+
+user_ansible_name: "{{ ansible_user }}"
+user_ansible_hashed_password: "$6$rounds=65600$eZOQjN0QU12ho..C$yIJReem2zkW1qq66UWz2MwfrCCBWs1ztzJZeVB3YjWCRIG85Fuh1q0CeWXfH.zyKELks4f2WflAcFNA2woxUX1"
+user_ansible_ssh_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
+
+user_admin_name: "local-admin"
+user_admin_hashed_password: "$6$rounds=65600$5CW03PKepJF6QoGC$wHXHJj.ATZKu/vuTYeXsSZrmvsJ4HPaYVXCMNUIvrmXbXSsSYNiNNoGIti2bHmGNXYNdiAG1wx/OTrpi41DPl."
+user_admin_ssh_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/authorized_keys') }}"
+
+ip_interfaces:
+  management:
+    address: "192.168.1.81/24"
+    interface: "enp6s18"
+    gateway: "192.168.1.1"
+
+nameservers:
+  - 192.168.1.1
+
+disk_ids:
+  hdds:
+    - ata-WDC_WD101EFBX-68B0AN0_VH0EJRLM
+    - ata-WDC_WD101EFBX-68B0AN0_VH0EXZ7M
+    - ata-WDC_WD101EFBX-68B0AN0_VH0EYKDM
+    - ata-WDC_WD101EFBX-68B0AN0_VH0EZXXM
+    - ata-WDC_WD101EFBX-68B0AN0_VH0G0KEM
+    - ata-WDC_WD101EFBX-68B0AN0_VH0G2V2M
+    - ata-WDC_WD101EFBX-68B0AN0_VH0G3MEM
+    - ata-WDC_WD101EFBX-68B0AN0_VH0G64TM
+  ssds:
+    - ata-QEMU_HARDDISK_QM00013
+    - ata-QEMU_HARDDISK_QM00015
+  nvmes:
+    - nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W905595N
+    - nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W953931E

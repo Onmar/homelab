@@ -1,0 +1,30 @@
+---
+- block:
+    - name: Ensure ufw is installed
+      ansible.builtin.apt:
+        name: ufw
+        state: latest
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Disable IPv6 in ufw
+      ansible.builtin.lineinfile:
+        path: /etc/default/ufw
+        regex: '^#?\s*?IPV6'
+        line: "IPV6=no"
+        state: present
+
+    - name: Allow ssh traffic
+      community.general.ufw:
+        comment: SSH
+        from_ip: "{{ ip_interfaces.management.address | ansible.utils.ipaddr('network/prefix') }}"
+        rule: allow
+        port: 22
+        proto: tcp
+
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
+        policy: deny
+
+  become: true

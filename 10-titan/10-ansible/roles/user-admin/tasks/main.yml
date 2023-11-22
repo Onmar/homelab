@@ -1,0 +1,17 @@
+---
+- name: Create admin user
+  ansible.builtin.user:
+    name: "{{ user_admin_name }}"
+    password: "{{ user_admin_hashed_password }}"
+    update_password: always
+    groups: ["sudo", "ssh"]
+    shell: "{{ user_admin_shell }}"
+  become: true
+
+- name: Add SSH key to admin user
+  ansible.posix.authorized_key:
+    user: "{{ user_admin_name }}"
+    key: "{{ user_admin_ssh_key }}"
+    key_options: ""
+    exclusive: true
+  become: true  # Needed because we are a different user

@@ -1,0 +1,28 @@
+---
+- block:
+    - name: Disable IPv6 via sysctl
+      ansible.posix.sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        state: present
+      with_items:
+        - { name: "net.ipv6.conf.all.disable_ipv6", value: "1"}
+        - { name: "net.ipv6.conf.default.disable_ipv6", value: "1"}
+        - { name: "net.ipv6.conf.lo.disable_ipv6", value: "1"}
+
+    - name: Create network configuration
+      block:
+        - name: Create network interface files
+          ansible.builtin.template:
+            src: interface.j2
+            dest: "/etc/network/interfaces.d/{{ item.key }}"
+          vars:
+            ip: "{{ item.value }}"
+          with_dict: "{{ ip_interfaces }}"
+          
+        - name: Create resolv.conf (nameserver) file
+          ansible.builtin.template:
+            src: resolv.conf.j2
+            dest: "/etc/resolv.conf"
+
+  become: true
