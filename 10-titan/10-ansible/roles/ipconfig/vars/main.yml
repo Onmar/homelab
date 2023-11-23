@@ -1,0 +1,2 @@
+ipconfig_interfaces_include_path: /etc/network/interfaces.d
+ipconfig_nameserver_file_path: /etc/resolv.conf

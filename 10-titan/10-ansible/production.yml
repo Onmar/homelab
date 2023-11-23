@@ -12,4 +12,7 @@
     - ssh
     - root
     - locale
+    - qemu-guest
+    - mail
     - disks
+    - smart

@@ -9,8 +9,8 @@
 
     - name: Disable IPv6 in ufw
       ansible.builtin.lineinfile:
-        path: /etc/default/ufw
-        regex: '^#?\s*?IPV6'
+        path: "{{ ufw_config_file_path }}"
+        regex: '^#?\s*IPV6'
         line: "IPV6=no"
         state: present
 

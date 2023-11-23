@@ -1,0 +1,24 @@
+# {{ ansible_managed }}
+
+# hdd disks
+DEFAULT -a -d auto \
+    -m "{{ smart_notification_dest_mail_address }}" \
+    -M exec {{ smart_smartdnotify_sh_file_path }} -M test -M diminishing \
+    -R 194 \
+    -S on \
+    -W 5,55,65
+
+# HDDs
+{% for disk in disk_ids.hdds %}
+/dev/disk/by-id/{{ disk }} -s (S/../../2/02|L/../{{ loop.index + 3}}/./02)
+{% endfor %}
+
+# SSDs
+{% for disk in disk_ids.ssds %}
+/dev/disk/by-id/{{ disk }} -C 0 -U 0 -I 231
+{% endfor %}
+
+# NVMEs
+{% for disk in disk_ids.nvmes %}
+/dev/disk/by-id/{{ disk }} -C 0 -U 0 -I 231
+{% endfor %}

@@ -1,7 +1,6 @@
 ---
-timezone: "Europe/Zurich"
-locales:
+locale_timezone: "Etc/UTC"
+locale_locales:
   - "en_US.UTF-8"
-  - "de_CH.UTF-8"
-keyboard_model: pc105
-keyboard_layout: ch
+locale_keyboard_model: "pc104"
+locale_keyboard_layout: "us"

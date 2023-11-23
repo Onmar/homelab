@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Save the email message (STDIN) to a file:
+cat > /root/msg
+
+# Append the output of smartctl -a to the message:
+echo "" >> /root/msg
+echo "smartctl output:" >> /root/msg
+/usr/sbin/smartctl -a -d $SMARTD_DEVICETYPE $SMARTD_DEVICE >> /root/msg
+
+# Now email the message to the user. 
+mail -s "$SMARTD_SUBJECT" -r "{{ smart_notificatiom_from_mail_address }}" $SMARTD_ADDRESS < /root/msg
+
+rm /root/msg

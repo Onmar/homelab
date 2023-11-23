@@ -15,7 +15,10 @@
         - name: Create network interface files
           ansible.builtin.template:
             src: interface.j2
-            dest: "/etc/network/interfaces.d/{{ item.key }}"
+            dest: "{{ ipconfig_interfaces_include_path }}/{{ item.key }}"
+            owner: root
+            group: root
+            mode: 0644
           vars:
             ip: "{{ item.value }}"
           with_dict: "{{ ip_interfaces }}"
@@ -23,6 +26,9 @@
         - name: Create resolv.conf (nameserver) file
           ansible.builtin.template:
             src: resolv.conf.j2
-            dest: "/etc/resolv.conf"
+            dest: "{{ ipconfig_nameserver_file_path }}"
+            owner: root
+            group: root
+            mode: 0644
 
   become: true

@@ -1,0 +1,3 @@
+---
+smart_smartd_conf_file_path: /etc/smartd.conf
+smart_smartdnotify_sh_file_path: /usr/local/bin/smartdnotify.sh

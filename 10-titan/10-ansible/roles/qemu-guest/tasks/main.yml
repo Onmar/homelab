@@ -1,0 +1,17 @@
+---
+- block:
+    - name: Install qemu-guest-agent
+      ansible.builtin.apt:
+        name: qemu-guest-agent
+        state: latest
+        update_cache: true
+        cache_valid_time: 3600
+      notify: Restart qemu-guest-agent
+
+    - name: Enable qemu-guest-agent
+      service:
+        name: qemu-guest-agent
+        state: started
+        enabled: yes
+
+  become: true

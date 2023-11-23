@@ -1,0 +1,15 @@
+defaults
+
+port {{ mail_smtps_port }}
+tls on
+tls_starttls off
+
+account noreply
+
+host {{ mail_smtps_server }}
+from {{ mail_from_address }}
+auth on
+user {{ mail_auth_user }}
+password {{ mail_auth_password }}
+
+account default : noreply

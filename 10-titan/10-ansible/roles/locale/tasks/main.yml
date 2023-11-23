@@ -1,14 +1,17 @@
 ---
 - name: Set timezone
   community.general.timezone:
-    name: "{{ timezone }}"
+    name: "{{ locale_timezone }}"
 
 - name: Generate locale
   community.general.locale_gen:
     name: "{{ item }}"
     state: present
-  with_items: "{{ locales }}"
+  with_items: "{{ locale_locales }}"
 
 - name: Set keyboard layout
   ansible.builtin.include_role:
     name: gantsign.keyboard
+  vars:
+    keyboard_model: "{{ locale_keyboard_model }}"
+    keyboard_layout: "{{ locale_keyboard_layout }}"

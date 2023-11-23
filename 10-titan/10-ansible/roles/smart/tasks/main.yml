@@ -1,0 +1,48 @@
+---
+- block:
+    - name: Install smartmontools
+      ansible.builtin.apt:
+        name: smartmontools
+        state: latest
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Create smartd.conf file
+      ansible.builtin.template:
+        src: smartd.conf.j2
+        dest: "{{ smart_smartd_conf_file_path }}"
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart smartd
+
+    - name: Create smartdnotify.sh file
+      ansible.builtin.template:
+        src: smartdnotify.sh.j2
+        dest: "{{ smart_smartdnotify_sh_file_path }}"
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Create smartd override conf file
+      ansible.builtin.copy:
+        src: smartmontools.override.conf
+        dest: "/etc/systemd/system/smartmontools.service.d/override.conf"
+        owner: root
+        group: root
+        mode: 0644
+      notify: Restart smartd
+      register: override
+
+    - name: Reload systemd
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      when: override.changed
+
+    - name: Enable smartd
+      service:
+        name: smartd.service
+        state: started
+        enabled: yes
+
+  become: true

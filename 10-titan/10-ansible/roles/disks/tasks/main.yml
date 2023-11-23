@@ -10,6 +10,9 @@
     - name: Create hdparm.conf file
       ansible.builtin.template:
         src: hdparm.conf.j2
-        dest: /etc/hdparm.conf
+        dest: "{{ hdparm_conf_file_path }}"
+        owner: root
+        group: root
+        mode: 0644
 
   become: true

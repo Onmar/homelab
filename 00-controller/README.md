@@ -3,5 +3,6 @@
 ## Install Ansible
 * [https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html#installing-ansible-on-ubuntu]()
 
-## Install YubiKey Software
-* [https://github.com/drduh/YubiKey-Guide]()
+## Comissioning
+* Add admin ssh key to authorized keys
+* Add ansible ssh private and public key to ssh config
