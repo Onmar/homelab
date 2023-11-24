@@ -1,7 +1,7 @@
 ---
 - name: Restart smartd
-  service:
-    name: "smartd.service"
+  ansible.builtin.service:
+    name: smartd.service
     state: restarted
-    enabled: yes
+    enabled: true
   become: true

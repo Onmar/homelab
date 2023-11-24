@@ -1,6 +1,7 @@
+---
 - name: Restart qemu-guest-agent
-  service:
+  ansible.builtin.service:
     name: qemu-guest-agent
     state: restarted
-    enabled: yes
+    enabled: true
   become: true

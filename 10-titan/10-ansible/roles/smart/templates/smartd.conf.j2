@@ -4,6 +4,7 @@
 DEFAULT -a -d auto \
     -m "{{ smart_notification_dest_mail_address }}" \
     -M exec {{ smart_smartdnotify_sh_file_path }} -M test -M diminishing \
+    -n standby \
     -R 194 \
     -S on \
     -W 5,55,65

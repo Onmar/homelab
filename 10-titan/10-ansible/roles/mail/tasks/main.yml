@@ -1,14 +1,16 @@
 ---
-- block:
+- name: Become
+  become: true
+  block:
     - name: Remove exim4
       ansible.builtin.apt:
-        name: "exim4"
+        name: exim4
         state: absent
         purge: true
 
     - name: Install msmtp and mailx is installed
       ansible.builtin.apt:
-        name: ["mailutils", "msmtp", "msmtp-mta"]
+        name: [mailutils, msmtp, msmtp-mta]
         state: latest
         update_cache: true
         cache_valid_time: 3600
@@ -19,6 +21,4 @@
         dest: /etc/msmtprc
         owner: root
         group: mail
-        mode: 0640
-
-  become: true
+        mode: "0640"

@@ -1,5 +1,7 @@
 ---
-- block:
+- name: Become
+  become: true
+  block:
     - name: Create snapshots before ansible
       community.general.zfs:
         name: "{{ item }}@before-ansible"
@@ -7,5 +9,3 @@
       with_items:
         - bpool
         - rpool
-        
-  become: true

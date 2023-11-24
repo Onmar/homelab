@@ -1,9 +1,9 @@
 ---
-- block:
+- name: Become
+  become: true
+  block:
     - name: Ensure groups are present
-      group:
+      ansible.builtin.group:
         name: "{{ item }}"
         state: present
       with_items: "{{ linux_groups }}"
-
-  become: true

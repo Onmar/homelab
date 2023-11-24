@@ -3,6 +3,5 @@ disk_ids:
   hdds: []
   ssds: []
   nvmes: []
-
 smart_notification_dest_mail_address: ""
 smart_notificatiom_from_mail_address: ""

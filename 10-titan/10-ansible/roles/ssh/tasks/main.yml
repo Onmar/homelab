@@ -1,5 +1,7 @@
 ---
-- block:  # Become block
+- name: Become
+  become: true
+  block:
     - name: Update ssh server
       ansible.builtin.apt:
         name: openssh-server
@@ -11,31 +13,31 @@
     - name: Config - Disable root login
       ansible.builtin.lineinfile:
         path: "{{ sshd_config_file }}"
-        regexp: '^#?\s*PermitRootLogin'
-        line: "PermitRootLogin no"
+        regexp: ^#?\s*PermitRootLogin
+        line: PermitRootLogin no
         state: present
-        backup: yes
+        backup: true
       notify: Restart sshd
 
     - name: Config - Disable password authentication
       ansible.builtin.lineinfile:
         path: "{{ sshd_config_file }}"
-        regexp: '^#?\s*PasswordAuthentication'
-        line: "PasswordAuthentication no"
+        regexp: ^#?\s*PasswordAuthentication
+        line: PasswordAuthentication no
         state: present
       notify: Restart sshd
 
     - name: Config - Allow only users in ssh group
       block:
-        - getent:
+        - name: Get existing groups
+          ansible.builtin.getent:
             database: group
 
-        - ansible.builtin.lineinfile:
+        - name: Modify config file
+          ansible.builtin.lineinfile:
             path: "{{ sshd_config_file }}"
-            regexp: '^#?\s*AllowGroups'
-            line: "AllowGroups ssh"
+            regexp: ^#?\s*AllowGroups
+            line: AllowGroups ssh
             state: present
           when: "'ssh' in ansible_facts.getent_group"
           notify: Restart sshd
-
-  become: true

@@ -1,7 +1,6 @@
 ---
 # Dictionary with the ip address information. Will create one network file per interface
-ip_interfaces:
-
+ip_interfaces: {}
 # ip_interfaces:
 #   name1:
 #     address: 192.168.0.16/24

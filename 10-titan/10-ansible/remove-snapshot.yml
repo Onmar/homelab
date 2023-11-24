@@ -1,5 +1,6 @@
 ---
-- hosts: production
+- name: Remove zfs snapshots
+  hosts: production
   tasks:
     - name: Remove snapshots
       community.general.zfs:

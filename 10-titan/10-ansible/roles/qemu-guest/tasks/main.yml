@@ -1,5 +1,7 @@
 ---
-- block:
+- name: Become
+  become: true
+  block:
     - name: Install qemu-guest-agent
       ansible.builtin.apt:
         name: qemu-guest-agent
@@ -9,9 +11,7 @@
       notify: Restart qemu-guest-agent
 
     - name: Enable qemu-guest-agent
-      service:
+      ansible.builtin.service:
         name: qemu-guest-agent
         state: started
-        enabled: yes
-
-  become: true
+        enabled: true

@@ -1,5 +1,6 @@
 ---
-- hosts: production
+- name: Titan NAS Server
+  hosts: production
   roles:
     - create-snapshot
     - update

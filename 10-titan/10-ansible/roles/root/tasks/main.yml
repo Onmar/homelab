@@ -1,6 +1,6 @@
 ---
 - name: Remove root password
   ansible.builtin.user:
-    name: "root"
+    name: root
     password: "*"
     update_password: always

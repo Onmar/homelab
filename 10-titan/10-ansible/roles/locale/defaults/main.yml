@@ -1,6 +1,6 @@
 ---
-locale_timezone: "Etc/UTC"
+locale_timezone: Etc/UTC
 locale_locales:
-  - "en_US.UTF-8"
-locale_keyboard_model: "pc104"
-locale_keyboard_layout: "us"
+  - en_US.UTF-8
+locale_keyboard_model: pc104
+locale_keyboard_layout: us

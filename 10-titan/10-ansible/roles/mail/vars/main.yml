@@ -1,2 +1,2 @@
 ---
-mail_rc_file_path: "/etc/mail.rc"
+mail_rc_file_path: /etc/mail.rc

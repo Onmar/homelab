@@ -1,5 +1,7 @@
 ---
-- block:
+- name: Become
+  become: true
+  block:
     - name: Ensure ufw is installed
       ansible.builtin.apt:
         name: ufw
@@ -10,8 +12,8 @@
     - name: Disable IPv6 in ufw
       ansible.builtin.lineinfile:
         path: "{{ ufw_config_file_path }}"
-        regex: '^#?\s*IPV6'
-        line: "IPV6=no"
+        regex: ^#?\s*IPV6
+        line: IPV6=no
         state: present
 
     - name: Allow ssh traffic
@@ -26,5 +28,3 @@
       community.general.ufw:
         state: enabled
         policy: deny
-
-  become: true

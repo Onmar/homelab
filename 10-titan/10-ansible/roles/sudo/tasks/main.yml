@@ -1,11 +1,11 @@
 ---
-- block:
+- name: Become
+  become: true
+  block:
     - name: Ensure sudo group has sudo privileges
       ansible.builtin.lineinfile:
         path: "{{ sudoers_file_path }}"
-        regexp: '^#?\s*%sudo'
+        regexp: ^#?\s*%sudo
         line: "%sudo ALL=(ALL:ALL) ALL"
         state: present
         validate: "{{ visudo_exec_path }} -cf %s"
-        
-  become: true

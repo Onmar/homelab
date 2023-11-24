@@ -4,7 +4,7 @@
     name: "{{ user_ansible_name }}"
     password: "{{ user_ansible_hashed_password }}"
     update_password: always
-    groups: ["sudo", "ssh"]
+    groups: [sudo, ssh]
     shell: "{{ user_ansible_shell }}"
   become: true
 
@@ -12,14 +12,14 @@
   ansible.posix.authorized_key:
     user: "{{ user_ansible_name }}"
     key: "{{ user_ansible_ssh_key }}"
-    key_options: "no-agent-forwarding,no-port-forwarding,no-x11-forwarding"
+    key_options: no-agent-forwarding,no-port-forwarding,no-x11-forwarding
     exclusive: true
 
 - name: Enable passwordless sudo for ansible user
   ansible.builtin.lineinfile:
     path: "{{ sudoers_file_path }}"
-    regexp: '^#?\s*ansible'
-    line: "ansible ALL=(ALL:ALL) NOPASSWD:ALL"
+    regexp: ^#?\s*ansible
+    line: ansible ALL=(ALL:ALL) NOPASSWD:ALL
     state: present
     validate: "{{ visudo_exec_path }} -cf %s"
   become: true

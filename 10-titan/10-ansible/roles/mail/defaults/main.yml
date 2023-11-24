@@ -2,6 +2,6 @@
 mail_smtps_server: ""
 mail_smtps_port: 465
 mail_from_address: ""
-mail_auth_type: "plain"
+mail_auth_type: plain
 mail_auth_user: ""
 mail_auth_password: ""
