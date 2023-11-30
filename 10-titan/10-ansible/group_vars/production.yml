@@ -1,14 +1,20 @@
 ---
-linux_groups: [ "sudo", "ssh", "mail" ]
+linux_groups: [ "sudo", "ssh", "mail", "users" ]
 
-user_ansible_name: "{{ ansible_user }}"
-user_ansible_hashed_password: "$6$rounds=65600$eZOQjN0QU12ho..C$yIJReem2zkW1qq66UWz2MwfrCCBWs1ztzJZeVB3YjWCRIG85Fuh1q0CeWXfH.zyKELks4f2WflAcFNA2woxUX1"
-user_ansible_ssh_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
+# Users
+users:
+  - name: "{{ansible_user}}"
+    password: "$6$rounds=65600$eZOQjN0QU12ho..C$yIJReem2zkW1qq66UWz2MwfrCCBWs1ztzJZeVB3YjWCRIG85Fuh1q0CeWXfH.zyKELks4f2WflAcFNA2woxUX1"
+    groups: ["sudo", "ssh"]
+    authorized_ssh_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_ed25519.pub') }}"
+    authorized_ssh_key_options: "no-agent-forwarding,no-port-forwarding,no-x11-forwarding"
+    passwordless_sudo: true
+  - name: "local-admin"
+    password: "$6$rounds=65600$5CW03PKepJF6QoGC$wHXHJj.ATZKu/vuTYeXsSZrmvsJ4HPaYVXCMNUIvrmXbXSsSYNiNNoGIti2bHmGNXYNdiAG1wx/OTrpi41DPl."
+    groups: ["sudo", "ssh", "mail", "users"]
+    authorized_ssh_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/authorized_keys') }}"
 
-user_admin_name: "local-admin"
-user_admin_hashed_password: "$6$rounds=65600$5CW03PKepJF6QoGC$wHXHJj.ATZKu/vuTYeXsSZrmvsJ4HPaYVXCMNUIvrmXbXSsSYNiNNoGIti2bHmGNXYNdiAG1wx/OTrpi41DPl."
-user_admin_ssh_key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/authorized_keys') }}"
-
+# IP Config
 ip_interfaces:
   management:
     address: "192.168.1.81/24"
@@ -18,6 +24,7 @@ ip_interfaces:
 nameservers:
   - 192.168.1.1
 
+# Locale
 locale_timezone: "Europe/Zurich"
 locale_locales:
   - "en_US.UTF-8"
@@ -25,6 +32,7 @@ locale_locales:
 locale_keyboard_model: pc105
 locale_keyboard_layout: ch
 
+# Mail
 mail_smtps_server: !vault |
           $ANSIBLE_VAULT;1.2;AES256;production
           31323664366431316332383165653531643364393932646338383661333636663761316438383030
@@ -40,7 +48,6 @@ mail_from_address: !vault |
           62633236303533333737303138346539323436313538383234313238316363656139643964343438
           6434376539633965350a393835633761373230663737626466396166306563623139356232343964
           61643563396566313061656164326232626236373365316262663830643835323262
-mail_auth_type: "plain"
 mail_auth_user: !vault |
           $ANSIBLE_VAULT;1.2;AES256;production
           39356166396134613263646138306337386139383364636639376239376130653165616564393533
@@ -57,22 +64,30 @@ mail_auth_password: !vault |
           63346432346230633365626239306465363234313464366139303335383264306361383438393363
           3231616461306362656463373837326566346537316535646430
 
-disk_ids:
+# S.M.A.R.T.
+disks:
   hdds:
-    - ata-WDC_WD101EFBX-68B0AN0_VH0EJRLM
-    - ata-WDC_WD101EFBX-68B0AN0_VH0EXZ7M
-    - ata-WDC_WD101EFBX-68B0AN0_VH0EYKDM
-    - ata-WDC_WD101EFBX-68B0AN0_VH0EZXXM
-    - ata-WDC_WD101EFBX-68B0AN0_VH0G0KEM
-    - ata-WDC_WD101EFBX-68B0AN0_VH0G2V2M
-    - ata-WDC_WD101EFBX-68B0AN0_VH0G3MEM
-    - ata-WDC_WD101EFBX-68B0AN0_VH0G64TM
+    ids:
+      - ata-WDC_WD101EFBX-68B0AN0_VH0EJRLM
+      - ata-WDC_WD101EFBX-68B0AN0_VH0EXZ7M
+      - ata-WDC_WD101EFBX-68B0AN0_VH0EYKDM
+      - ata-WDC_WD101EFBX-68B0AN0_VH0EZXXM
+      - ata-WDC_WD101EFBX-68B0AN0_VH0G0KEM
+      - ata-WDC_WD101EFBX-68B0AN0_VH0G2V2M
+      - ata-WDC_WD101EFBX-68B0AN0_VH0G3MEM
+      - ata-WDC_WD101EFBX-68B0AN0_VH0G64TM
+    apm: 128
+    acoustic_management: 0
+    spindown_time: 242
+    write_cache: "off"
   ssds:
-    - ata-QEMU_HARDDISK_QM00013
-    - ata-QEMU_HARDDISK_QM00015
+    ids:
+      - ata-QEMU_HARDDISK_QM00013
+      - ata-QEMU_HARDDISK_QM00015
   nvmes:
-    - nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W905595N
-    - nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W953931E
+    ids:
+      - nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W905595N
+      - nvme-Samsung_SSD_980_PRO_2TB_S69ENF0W953931E
 
 smart_notification_dest_mail_address: !vault |
           $ANSIBLE_VAULT;1.2;AES256;production
@@ -88,3 +103,54 @@ smart_notificatiom_from_mail_address: !vault |
           36636532333131623261323938366439663830303530373264633863396265376463633535323133
           6136306165623937330a633562383333383966336236666437656434653839346535366566653332
           66666464626461616534363932353263636430396634386462626336656238313632
+
+# Datasets
+datasets:
+  - name: vault/media
+    properties:
+      recordsize: 1M
+      casesensitivity: insensitive
+  - name: vault/volumes
+    properties:
+      canmount: "off"
+      mountpoint: none
+  - name: vault/volumes/steam
+    properties:
+      volsize: 1TB
+      # volblocksize: 256kB
+
+# Samba
+samba_local_master: false
+samba_users:
+  - name: "local-admin"
+    password: !vault |
+          $ANSIBLE_VAULT;1.2;AES256;production
+          37646162363461323035633665396166323131393133656565306665306562343433363062356434
+          6237363935363034623963633239646130636564353832370a623738306435613535656238333262
+          64656339396638346330323635386330306434306230613662643031663039303263356432383539
+          6439313133366234660a316432663030313366353437333532636266643730393830343166393538
+          3339
+samba_shares:
+  - name: media
+    comment: "Media Files"
+    path: /mnt/vault/media
+    user: root
+    group: users
+    writeable: "yes"
+
+# UFW
+ufw_services:
+  - comment: Samba
+    rule: allow
+    from_ip: "{{ ip_interfaces.management.address | ansible.utils.ipaddr('network/prefix') }}"
+    name: Samba
+  - comment: iSCSI
+    rule: allow
+    from_ip: "{{ ip_interfaces.management.address | ansible.utils.ipaddr('network/prefix') }}"
+    port: 3260
+    proto: tcp
+  - comment: iSCSI
+    rule: allow
+    from_ip: "{{ ip_interfaces.management.address | ansible.utils.ipaddr('network/prefix') }}"
+    port: 3260
+    proto: udp

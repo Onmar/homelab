@@ -19,8 +19,8 @@
     - name: Allow ssh traffic
       community.general.ufw:
         comment: SSH
-        from_ip: "{{ ip_interfaces.management.address | ansible.utils.ipaddr('network/prefix') }}"
         rule: allow
+        from_ip: "{{ ip_interfaces.management.address | ansible.utils.ipaddr('network/prefix') }}"
         port: 22
         proto: tcp
 

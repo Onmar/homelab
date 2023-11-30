@@ -1,11 +1,11 @@
 # {{ ansible_managed }}
 
-{% for disk in disk_ids.hdds %}
+{% for disk in disks.hdds.ids %}
 /dev/disk/by-id/{{ disk }} {
-    apm = 128
-    #acoustic_management = 128
-    spindown_time = 0
-    write_cache = off
+    apm = {{ disks.hdds.apm }}
+    acoustic_management = {{ disks.hdds.acoustic_management }}
+    spindown_time = {{ disks.hdds.spindown_time }}
+    write_cache = {{ disks.hdds.write_cache }}
 }
 
 {% endfor %}

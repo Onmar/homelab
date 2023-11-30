@@ -1,0 +1,6 @@
+---
+- name: Create zfs volume
+  community.general.zfs:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    extra_zfs_properties: "{{ item.properties }}"

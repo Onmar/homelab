@@ -1,0 +1,25 @@
+---
+- name: Become
+  become: true
+  block:
+    - name: Install targetcli packages
+      ansible.builtin.apt:
+        name: [targetcli-fb]
+        state: latest
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Copy configuration file
+      ansible.builtin.copy:
+        src: "{{ iscsi_config_file_src }}"
+        dest: "{{ iscsi_configuration_file_path }}"
+        owner: root
+        group: root
+        mode: '0600'
+      notify: Reload targetcli
+
+    - name: Enable rtslib-fb-targetctl
+      ansible.builtin.service:
+        name: rtslib-fb-targetctl
+        state: started
+        enabled: true

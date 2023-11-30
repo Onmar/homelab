@@ -2,7 +2,7 @@
 
 # hdd disks
 DEFAULT -a -d auto \
-    -m "{{ smart_notification_dest_mail_address }}" \
+    -m {{ smart_notification_dest_mail_address }} \
     -M exec {{ smart_smartdnotify_sh_file_path }} -M test -M diminishing \
     -n standby \
     -R 194 \
@@ -10,16 +10,16 @@ DEFAULT -a -d auto \
     -W 5,55,65
 
 # HDDs
-{% for disk in disk_ids.hdds %}
+{% for disk in disks.hdds.ids %}
 /dev/disk/by-id/{{ disk }} -s (S/../../2/02|L/../{{ loop.index + 3}}/./02)
 {% endfor %}
 
 # SSDs
-{% for disk in disk_ids.ssds %}
+{% for disk in disks.ssds.ids %}
 /dev/disk/by-id/{{ disk }} -C 0 -U 0 -I 231
 {% endfor %}
 
 # NVMEs
-{% for disk in disk_ids.nvmes %}
+{% for disk in disks.nvmes.ids %}
 /dev/disk/by-id/{{ disk }} -C 0 -U 0 -I 231
 {% endfor %}

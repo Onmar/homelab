@@ -1,0 +1,7 @@
+---
+- name: Become
+  become: true
+  block:
+    - name: Set ufw rule
+      community.general.ufw: "{{ item }}"
+      with_items: "{{ ufw_services }}"

@@ -7,6 +7,6 @@
         name: "{{ item }}@before-ansible"
         state: absent
       with_items:
-        - bpool
-        - rpool
+        - bpool/BOOT/debian
+        - rpool/ROOT/debian
       become: true

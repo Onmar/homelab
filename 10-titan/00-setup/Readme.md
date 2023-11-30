@@ -15,6 +15,15 @@ Password: &lt;any&gt;
   sudo zfs snapshot -r rpool@install
   ```
 
+* Run Disk Setup
+
+* Add writecache modules to kernel
+  ```
+  echo "dm_writecache" >> /etc/initramfs-tools/modules
+  echo "dm_mod" >> /etc/initramfs-tools/modules  # Might not be necessary
+  update-initramfs -u -k all
+  ```
+
 * Run ansible with custom ip
   ```
   ansible-playbook production.yml --extra-vars "ansible_host=192.168.1.xxx" --ask-pass --ask-become-pass"

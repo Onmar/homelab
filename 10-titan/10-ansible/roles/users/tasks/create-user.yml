@@ -1,0 +1,45 @@
+---
+- name: Create zfs dataset
+  community.general.zfs:
+    name: "rpool/home/{{ item.name }}"
+    state: present
+
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    update_password: always
+    groups: "{{ item.groups }}"
+    shell: "{{ item.shell | default(users_default_shell) }}"
+
+- name: Copy default userprofile
+  ansible.builtin.shell: "cp -a /etc/skel/. /home/{{ item.name }}"
+  args:
+    creates: "/home/{{ item.name }}/.bashrc"
+  register: new_userprofile
+
+- name: Modify userprofile ownership
+  ansible.builtin.file:
+    path: "/home/{{ item.name }}"
+    state: directory
+    recurse: yes
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  when: new_userprofile.changed
+
+- name: Add SSH key
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.authorized_ssh_key }}"
+    key_options: "{{ item.authorized_ssh_key_options | default('') }}"
+    exclusive: "{{ item.authorized_ssh_key_exclusive | default(true) }}"
+  when: item.authorized_ssh_key is defined
+
+- name: Enable passwordless sudo
+  ansible.builtin.lineinfile:
+    path: "{{ sudoers_file_path }}"
+    regexp: "^#?\\s*{{ item.name }}"
+    line: "{{ item.name }} ALL=(ALL:ALL) NOPASSWD:ALL"
+    state: present
+    validate: "{{ visudo_exec_path }} -cf %s"
+  when: item.passwordless_sudo is defined and item.passwordless_sudo

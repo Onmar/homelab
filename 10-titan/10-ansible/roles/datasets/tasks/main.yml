@@ -1,0 +1,7 @@
+---
+- name: Become
+  become: true
+  block:
+    - name: Create each dataset
+      include_tasks: create-dataset.yml
+      with_items: "{{ datasets }}"

@@ -1,0 +1,4 @@
+---
+- name: Reload targetcli
+  ansible.builtin.shell: targetctl restore
+  become: true

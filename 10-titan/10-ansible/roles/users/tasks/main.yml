@@ -1,0 +1,7 @@
+---
+- name: Create & configure user
+  become: true
+  block:
+    - name: Create each user
+      include_tasks: create-user.yml
+      with_items: "{{ users }}"

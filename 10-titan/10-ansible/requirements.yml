@@ -1,3 +1,9 @@
 ---
-- src: gantsign.keyboard
-  version: 1.5.0
+collections:
+  - name: vladgh.samba
+    version: 3.3.0
+
+roles:
+  - src: gantsign.keyboard
+    version: 1.5.0
+

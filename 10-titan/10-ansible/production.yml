@@ -6,8 +6,7 @@
     - update
     - linux_groups
     - sudo
-    - user-ansible
-    - user-admin
+    - users
     - ipconfig
     - ufw
     - ssh
@@ -17,3 +16,7 @@
     - mail
     - disks
     - smart
+    - datasets
+    - {role: vladgh.samba.server, become: true}
+    - iscsi
+    - ufw-services
